@@ -6,7 +6,7 @@ import "fmt"
 
 func main() {
 
-	binaryTree := TreeNode{Data: 5, Left: nil, Right: nil}
+	binaryTree := TreeNode{}
 
 	binaryTree.Add(4)
 	binaryTree.Add(2)
@@ -15,9 +15,13 @@ func main() {
 	binaryTree.Add(8)
 	binaryTree.Add(6)
 	binaryTree.Add(9)
+	binaryTree.Add(10)
+	binaryTree.Add(5)
+
+	binaryTree.Delete(Root, 4)
 
 	fmt.Println("2 yi ara :", binaryTree.Search(2))
-	fmt.Println("10 u ara :", binaryTree.Search(10))
+	fmt.Println("11 u ara :", binaryTree.Search(11))
 
 	fmt.Print()
 }
@@ -84,4 +88,47 @@ func (tn *TreeNode) Search(veri int) *TreeNode {
 	return nil
 }
 
-//ToDo Delete kodu yazılıcak
+func (tn *TreeNode) Delete(root *TreeNode, veri int) *TreeNode {
+
+	if root == nil {
+		return root
+	}
+
+	if root.Data > veri {
+		//veri datadan kucuk sola gir
+		root.Left = root.Left.Delete(root.Left, veri)
+	} else if root.Data < veri {
+		root.Right = root.Right.Delete(root.Right, veri)
+	} else {
+
+		//tek cocuk yada cocuksuz ıse
+		if root.Left == nil { //kokun solu yok ıse sagı dondur
+			return root.Right
+		} else if root.Right == nil { //kokun sagı yok ıse solu dondur
+			return root.Left
+		}
+		//silinen elemanın 2 cocugu var ıse
+		root.Data = root.Right.FindMin(root.Right).Data
+		root.Right = root.Right.Delete(root.Right, root.Data)
+		if root.Data == veri { //burayı global olan Root derını degısıtrebılmek ıcın yazıldı
+			Root = root
+		}
+	}
+	return root
+}
+
+func (tn *TreeNode) FindMin(root *TreeNode) *TreeNode {
+	current := root
+	for current.Left != nil {
+		current = current.Left
+	}
+	return current
+}
+
+func (tn *TreeNode) FindMax(root *TreeNode) *TreeNode {
+	current := root
+	for current.Right != nil {
+		current = current.Right
+	}
+	return current
+}
