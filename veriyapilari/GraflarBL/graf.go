@@ -5,6 +5,29 @@ import (
 	"fmt"
 )
 
+func main() {
+	// Grafikteki düğüm sayısı
+	vertices := 5
+
+	// Bir grafik oluşturuluyor
+	graph := NewGraph(vertices)
+
+	// Grafiğe kenarlar ekleniyor
+	graph.AddEdge(0, 1)
+	graph.AddEdge(0, 2)
+	graph.AddEdge(1, 3)
+	graph.AddEdge(1, 4)
+	graph.AddEdge(2, 4)
+
+	// Düğüm 0'dan başlayarak BFS gezisi yapılıyor
+	fmt.Print("Düğüm 0'dan başlayarak Önce Genişlik Araması: ")
+	graph.BFS(0)
+	fmt.Println()
+	// Düğüm 0'dan başlayarak DFS gezisi yapılıyor
+	fmt.Print("Düğüm 0'dan başlayarak Derinlik Öncelikli Arama: ")
+	graph.DFS(0)
+}
+
 // Graph, bitişiklik listesi kullanılarak bir grafiği temsil eder
 type Graph struct {
 	vertices int          // Grafikteki düğüm sayısı
@@ -79,25 +102,4 @@ func (g *Graph) DFSUtil(v int, visited []bool) {
 	}
 }
 
-func main() {
-	// Grafikteki düğüm sayısı
-	vertices := 5
-
-	// Bir grafik oluşturuluyor
-	graph := NewGraph(vertices)
-
-	// Grafiğe kenarlar ekleniyor
-	graph.AddEdge(0, 1)
-	graph.AddEdge(0, 2)
-	graph.AddEdge(1, 3)
-	graph.AddEdge(1, 4)
-	graph.AddEdge(2, 4)
-
-	// Düğüm 0'dan başlayarak BFS gezisi yapılıyor
-	fmt.Print("Düğüm 0'dan başlayarak Önce Genişlik Araması: ")
-	graph.BFS(0)
-	fmt.Println()
-	// Düğüm 0'dan başlayarak DFS gezisi yapılıyor
-	fmt.Print("Düğüm 0'dan başlayarak Derinlik Öncelikli Arama: ")
-	graph.DFS(0)
-}
+//ToDo Prim | kuruskal | Dijikstra | Belman-Ford yazılacak
