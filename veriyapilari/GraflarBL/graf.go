@@ -56,6 +56,29 @@ func (g *Graph) BFS(startNode int) {
 	}
 }
 
+// DFS, grafikte Derinlik Öncelikli Arama gerçekleştirir
+func (g *Graph) DFS(startNode int) {
+	visited := make([]bool, g.vertices) // Ziyaret edilmiş düğümleri tutmak için bir dizi oluşturuluyor
+
+	// Derinlik Öncelikli Arama'yı gerçekleştiren yardımcı fonksiyon çağrılıyor
+	g.DFSUtil(startNode, visited)
+}
+
+// DFSUtil, grafikte Derinlik Öncelikli Arama'nın yardımcı fonksiyonunu gerçekleştirir
+func (g *Graph) DFSUtil(v int, visited []bool) {
+	// Düğümü ziyaret edilmiş olarak işaretle ve yazdır
+	visited[v] = true
+	fmt.Print(v, " ")
+
+	// Bu düğüme komşu olan tüm düğümleri tekrarla
+	for e := g.adjList[v].Front(); e != nil; e = e.Next() {
+		neighbor := e.Value.(int) // Komşu düğüm değeri alınıyor
+		if !visited[neighbor] {
+			g.DFSUtil(neighbor, visited) // Komşu düğümü ziyaret et
+		}
+	}
+}
+
 func main() {
 	// Grafikteki düğüm sayısı
 	vertices := 5
@@ -73,4 +96,8 @@ func main() {
 	// Düğüm 0'dan başlayarak BFS gezisi yapılıyor
 	fmt.Print("Düğüm 0'dan başlayarak Önce Genişlik Araması: ")
 	graph.BFS(0)
+	fmt.Println()
+	// Düğüm 0'dan başlayarak DFS gezisi yapılıyor
+	fmt.Print("Düğüm 0'dan başlayarak Derinlik Öncelikli Arama: ")
+	graph.DFS(0)
 }
