@@ -2,6 +2,8 @@ package main
 
 import "fmt"
 
+//Burda dizi kullanılarak yapıldı
+
 func main() {
 	GrafıBaşlat(5)
 	BağlantıOluştur(1, 2)
