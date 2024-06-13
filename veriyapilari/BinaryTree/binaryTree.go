@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 //binary serch tree
 
@@ -17,13 +19,15 @@ func main() {
 	binaryTree.Add(9)
 	binaryTree.Add(10)
 	binaryTree.Add(5)
+	binaryTree.Add(13)
+	binaryTree.Add(12)
+	binaryTree.Add(14)
 
 	binaryTree.Delete(Root, 4)
 
-	fmt.Println("2 yi ara :", binaryTree.Search(2))
-	fmt.Println("11 u ara :", binaryTree.Search(11))
-
 	fmt.Print()
+	fmt.Println("Yukseklik :", Root.Yukseklik())
+	fmt.Println("Yaprak Sayısı :", Root.YaprakSayısınıBulma())
 }
 
 var Root *TreeNode
@@ -131,4 +135,23 @@ func (tn *TreeNode) FindMax(root *TreeNode) *TreeNode {
 		current = current.Right
 	}
 	return current
+}
+
+func (tn *TreeNode) Yukseklik() int {
+	if tn != nil {
+		return 1 + max(tn.Left.Yukseklik(), tn.Right.Yukseklik())
+	}
+	return -1
+}
+
+func (tn *TreeNode) YaprakSayısınıBulma() int {
+
+	if tn == nil {
+		return 0
+	}
+	if tn.Right == nil && tn.Left == nil {
+		//burası yaoraktır
+		return 1
+	}
+	return tn.Left.YaprakSayısınıBulma() + tn.Right.YaprakSayısınıBulma()
 }
