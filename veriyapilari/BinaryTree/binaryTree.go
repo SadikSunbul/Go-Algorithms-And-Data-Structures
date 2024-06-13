@@ -1,7 +1,9 @@
 package main
 
 import (
+	"container/list"
 	"fmt"
+	query "veriyapilari/Query"
 )
 
 //binary serch tree
@@ -28,6 +30,25 @@ func main() {
 	fmt.Print()
 	fmt.Println("Yukseklik :", Root.Yukseklik())
 	fmt.Println("Yaprak Sayısı :", Root.YaprakSayısınıBulma())
+
+	fmt.Print("PreOrder  :")
+	Root.PreOrder()
+	fmt.Println()
+	fmt.Print("InOrder   :")
+	Root.InOrder()
+	fmt.Println()
+	fmt.Print("PostOrder :")
+	Root.PostOrder()
+	fmt.Println()
+
+	fmt.Print("LevelOrder :")
+	// LevelOrder sonucunu işleyelim
+	for e := Root.LevlOrder().Front(); e != nil; e = e.Next() { //Front listedeki ilk elemanı dondurur e nil oluncaya kadar e nın bır sonrasını cagırır
+		node := e.Value.(*TreeNode)
+		fmt.Print(node.Data, " ")
+	}
+	fmt.Println()
+	fmt.Println()
 }
 
 var Root *TreeNode
@@ -154,4 +175,61 @@ func (tn *TreeNode) YaprakSayısınıBulma() int {
 		return 1
 	}
 	return tn.Left.YaprakSayısınıBulma() + tn.Right.YaprakSayısınıBulma()
+}
+
+func (tn *TreeNode) PreOrder() {
+	//kok-sol-sag
+	if tn != nil {
+		fmt.Print(tn.Data, " ")
+		tn.Left.PreOrder()
+		tn.Right.PreOrder()
+	}
+}
+func (tn *TreeNode) InOrder() {
+	//sol-kok-sag
+	if tn != nil {
+		tn.Left.InOrder()
+		fmt.Print(tn.Data, " ")
+		tn.Right.InOrder()
+	}
+}
+func (tn *TreeNode) PostOrder() {
+	//sol-sag-kok
+	if tn != nil {
+		tn.Left.PostOrder()
+		tn.Right.PostOrder()
+		fmt.Print(tn.Data, " ")
+	}
+}
+
+func (tn *TreeNode) LevlOrder() *list.List {
+	result := list.New()
+	if tn == nil {
+		return result
+	}
+
+	var queue = query.Query{}
+	queue.EnQueu(tn)
+
+	for queue.Count() > 0 {
+		curentInterface := queue.DeQueu()
+		// Ardından bu değeri TreeNode türüne dönüştürüyoruz
+		curent, ok := curentInterface.(*TreeNode)
+		if !ok {
+			// Dönüşüm başarısız olduğunda bir hata ver
+			fmt.Println("DeQueu() dönüşüm hatası")
+			return result
+		}
+
+		result.PushBack(curent)
+
+		if curent.Left != nil {
+			queue.EnQueu(curent.Left)
+		}
+		if curent.Right != nil {
+			queue.EnQueu(curent.Right)
+		}
+	}
+
+	return result
 }

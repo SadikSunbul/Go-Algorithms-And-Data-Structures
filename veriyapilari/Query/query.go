@@ -1,4 +1,4 @@
-package main
+package query
 
 import "fmt"
 
@@ -8,41 +8,42 @@ func main() {
 
 	query := Query{veri: 0, sonraki: nil}
 
-	query.DeQueu(1)
-	query.DeQueu(2)
-	query.DeQueu(3)
-	query.DeQueu(4)
-	query.DeQueu(5)
+	query.EnQueu(1)
+	query.EnQueu(2)
+	query.EnQueu(3)
+	query.EnQueu(4)
+	query.EnQueu(5)
 
 	query.QueryOku()
 
 	fmt.Println()
-	fmt.Println("Delete:", query.EnQueu())
+	fmt.Println("Delete:", query.DeQueu())
 	query.QueryOku()
 
 	fmt.Println()
-	fmt.Println("Delete:", query.EnQueu())
+	fmt.Println("Delete:", query.DeQueu())
 	query.QueryOku()
 
-	query.DeQueu(6)
-	query.DeQueu(7)
-	query.DeQueu(8)
+	query.EnQueu(6)
+	query.EnQueu(7)
+	query.EnQueu(8)
 
 	fmt.Println()
-	fmt.Println("Delete:", query.EnQueu())
+	fmt.Println("Delete:", query.DeQueu())
 	query.QueryOku()
 
 }
 
 type Query struct {
-	veri    int
+	veri    interface{}
 	sonraki *Query
 }
 
 var Baş *Query
 var Son *Query
+var count int = 0
 
-func (q *Query) DeQueu(deger int) { //ekleme işlemi yapıcak
+func (q *Query) EnQueu(deger interface{}) { //ekleme işlemi yapıcak
 	newQuery := Query{veri: deger, sonraki: nil}
 	if Baş == nil {
 		Baş = &newQuery
@@ -51,6 +52,7 @@ func (q *Query) DeQueu(deger int) { //ekleme işlemi yapıcak
 		Son.sonraki = &newQuery
 		Son = &newQuery
 	}
+	count++
 }
 
 func (q *Query) QueryOku() {
@@ -63,12 +65,16 @@ func (q *Query) QueryOku() {
 	}
 }
 
-func (q *Query) EnQueu() int { //cıkarma işlemi yapıcak
+func (q *Query) DeQueu() interface{} { //cıkarma işlemi yapıcak
 
 	//Bastan okunmaya baslar ve sılme ıslemı oradan yapılır
 	deger := Baş.veri
 
 	Baş = Baş.sonraki
-
+	count--
 	return deger
+}
+
+func (q *Query) Count() int {
+	return count
 }
