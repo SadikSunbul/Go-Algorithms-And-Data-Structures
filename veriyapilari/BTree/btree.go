@@ -179,7 +179,7 @@ func main() {
 	t.insert(30)
 	t.insert(7)
 	t.insert(17)
-
+	
 	fmt.Print("Oluşturulan ağacın taraması: ")
 	t.traverse()
 	fmt.Println()
